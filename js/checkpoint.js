@@ -16,7 +16,7 @@ async function init() {
   if (!team) { message('Please log in first.', 'This checkpoint can only be verified for an active team session.', 'error-text'); return; }
   if (!point) { message('Invalid checkpoint.', 'This QR link is not recognized. Ask an organizer for a valid checkpoint code.', 'error-text'); return; }
   const state = await getTeamState(team.id);
-  const expected = state.currentStage < 5 ? team.route[state.currentStage] : 'final_core';
+  const expected = state.currentStage < team.route.length ? team.route[state.currentStage] : 'final_core';
   if (locationId !== expected) { message('This is not your current destination.', 'The QR code is valid, but it does not match the checkpoint your team has unlocked.', 'error-text'); return; }
   if (state.status === STATUS.COMPLETED) { message('Treasure already found.', `Your completion time was ${formatDuration(state.completionTime - state.startTime)}.`); return; }
   card.innerHTML = `<div class="kicker success-text">CURRENT DESTINATION</div><h1>${point.shortName}</h1><p class="lede">Have you reached the location? Enter the backup code printed beside the QR checkpoint.</p><form id="checkpointForm" class="stack"><label for="checkpointCode">Checkpoint code</label><input id="checkpointCode" autocomplete="off" placeholder="Enter location code" required><button class="primary">Verify checkpoint <span>→</span></button><p class="feedback" id="feedback">The QR only identifies the location. Verification still requires the code.</p></form>`;
