@@ -88,14 +88,15 @@ const setHeader = () => {
 
     els.status.textContent = connectionLabel();
 
+    const totalCheckpoints = team.route.length;
     els.progress.textContent =
-        `Checkpoint ${Math.min(state.currentStage, 5)} / 5`;
+        `Checkpoint ${Math.min(state.currentStage, totalCheckpoints)} / ${totalCheckpoints}`;
 
     const progressFill = document.querySelector('#progressFill');
 
     if (progressFill) {
         progressFill.style.width =
-            `${state.currentStage / 5 * 100}%`;
+            `${state.currentStage / totalCheckpoints * 100}%`;
     }
 };
 
@@ -127,7 +128,7 @@ function startCard() {
         </h1>
 
         <p class="lede">
-            Five checkpoints. One route known only one step at a time.
+            Four checkpoints. One route known only one step at a time.
             Keep your team together and follow the clue exactly.
         </p>
 
@@ -167,7 +168,7 @@ function challengeCard() {
 
     els.card.innerHTML = `
         <div class="kicker">
-            CURRENT CHALLENGE · ${state.currentStage + 1} OF 5
+            CURRENT CHALLENGE · ${state.currentStage + 1} OF ${team.route.length}
         </div>
 
         <h1>
@@ -589,9 +590,9 @@ function render() {
     }
 
 
-    // All five checkpoints completed
+    // All checkpoints completed
     if (
-        state.currentStage >= 5
+        state.currentStage >= team.route.length
     ) {
         return finalCard();
     }
